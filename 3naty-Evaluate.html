@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إرسال رسالة إلى Discord</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>أرسل رسالة إلى غناتي </h1>
+        <textarea id="message" placeholder="اكتب رسالتك هنا..."></textarea><br>
+        <button onclick="sendMessage()">إرسال الرسالة</button>
+        <div class="message" id="responseMessage"></div>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const webhookUrl = 'https://discordapp.com/api/webhooks/1283718268355346435/zWuw6_i3EWkuQ7Ug0CAsvAXR0iXOBiJlBlFByCRW9aBA1fvkDnVfh_2W87dcP3d2XdKy';
+            const message = document.getElementById('message').value;
+            const responseMessage = document.getElementById('responseMessage');
+
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: message,
+                    }),
+                });
+
+                if (response.ok) {
+                    responseMessage.textContent = 'تم إرسال الرسالة بنجاح!';
+                    responseMessage.className = 'message success';
+                } else {
+                    responseMessage.textContent = 'فشل إرسال الرسالة.';
+                    responseMessage.className = 'message error';
+                }
+            } catch (error) {
+                responseMessage.textContent = 'حدث خطأ غير متوقع.';
+                responseMessage.className = 'message error';
+            }
+        }
+    </script>
+</body>
+</html>
